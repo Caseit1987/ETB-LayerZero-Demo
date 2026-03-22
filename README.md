@@ -88,3 +88,8 @@ This project is licensed under the [MIT License](LICENSE).
 ## Contact
 
 For educational inquiries: **Caseit1987**
+
+## Stats
+- 🖥 Scripts: 0
+- 📂 Examples: 0
+- ⏰ Last Update: N/A
