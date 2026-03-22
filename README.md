@@ -27,6 +27,7 @@ This repository contains a **safe conceptual demonstration** of the architecture
 
 \`\`\`
 ETB-LayerZero-Demo/
+<<<<<<< HEAD
 ├── README.md           # Project overview
 ├── docs/DISCLAIMER.md  # Safety disclaimer
 ├── scripts/            # Safe demo scripts
@@ -34,6 +35,13 @@ ETB-LayerZero-Demo/
 ├── examples/           # Example placeholder data
 │   └── sample_data.txt
 └── LICENSE             # MIT License
+=======
+├── README.md
+├── docs/DISCLAIMER.md
+├── scripts/demo.py
+├── examples/sample_data.txt
+└── LICENSE
+>>>>>>> cf57a95 (Initial ETB-LayerZero starter repo)
 \`\`\`
 
 ---
