@@ -1,4 +1,7 @@
-# Demo script 1 - ETB + LayerZero ASCII flow
+# Demo script 1 - ETB + LayerZero simulated live checks
+import random
+import time
+
 def diagram():
     print(\"\"\"
 +---------------------+
@@ -19,6 +22,16 @@ def diagram():
           v
   Secure Output / Action
 \"\"\")
+
+def simulate_request(id):
+    print(f"\n[Simulation] Request ID: {id}")
+    steps = ["Validate token", "Check trust boundary", "Confirm output", "Log action"]
+    for step in steps:
+        print(f" - {step}: {random.choice(['OK', 'Passed', 'Skipped', 'Verified'])}")
+        time.sleep(0.1)
+    print(f"[Simulation] Request ID {id} complete ✅\n")
+
 if __name__ == "__main__":
-    print("Running safe demo script 1")
     diagram()
+    for req_id in range(1, random.randint(2,5)):
+        simulate_request(req_id)
