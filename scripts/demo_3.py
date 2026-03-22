@@ -1,6 +1,8 @@
-# Demo script 3 - ETB + LayerZero simulated live checks
+# Demo script 3 - Live ETB + LayerZero simulation
 import random
 import time
+
+REQUEST_COUNT_FILE="../examples/request_count.txt"
 
 def diagram():
     print(\"\"\"
@@ -29,7 +31,14 @@ def simulate_request(id):
     for step in steps:
         print(f" - {step}: {random.choice(['OK', 'Passed', 'Skipped', 'Verified'])}")
         time.sleep(0.1)
-    print(f"[Simulation] Request ID {id} complete ✅\n")
+    # Increment request count
+    with open(REQUEST_COUNT_FILE, 'r+') as f:
+        count = int(f.read().strip())
+        count += 1
+        f.seek(0)
+        f.write(str(count))
+        f.truncate()
+    print(f"[Simulation] Request ID {id} complete ✅ Total requests processed: {count}\n")
 
 if __name__ == "__main__":
     diagram()
