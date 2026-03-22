@@ -11,15 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Count scripts and examples
+      - name: Count scripts, examples, requests
         run: |
           SCRIPTS_COUNT=$(ls scripts | wc -l)
           EXAMPLES_COUNT=$(ls examples | wc -l)
+          REQUESTS_PROCESSED=$(cat examples/request_count.txt || echo 0)
           DATE_NOW=$(date +"%Y-%m-%d %H:%M:%S")
-          sed -i "/^## Stats/,+3d" README.md
+          # Remove old stats section
+          sed -i "/^## Stats/,+4d" README.md
+          # Add updated stats section
           echo "## Stats" >> README.md
           echo "- 🖥 Scripts: $SCRIPTS_COUNT" >> README.md
           echo "- 📂 Examples: $EXAMPLES_COUNT" >> README.md
+          echo "- ✅ Requests Processed: $REQUESTS_PROCESSED" >> README.md
           echo "- ⏰ Last Update: $DATE_NOW" >> README.md
       - name: Commit README update
         run: |
