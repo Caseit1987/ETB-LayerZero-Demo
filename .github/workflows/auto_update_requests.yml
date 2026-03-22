@@ -1,0 +1,52 @@
+name: Auto Update README Stats
+
+# Run on every push to main or every hour
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/**'
+      - 'examples/**'
+  schedule:
+    - cron: '0 * * * *' # every hour, UTC
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Increment Requests Counter
+        run: |
+          COUNTER_FILE="examples/request_count.txt"
+          if [ ! -f "$COUNTER_FILE" ]; then
+            echo "0" > "$COUNTER_FILE"
+          fi
+          COUNT=$(cat "$COUNTER_FILE")
+          COUNT=$((COUNT + 1))
+          echo "$COUNT" > "$COUNTER_FILE"
+          echo "Updated requests processed to $COUNT"
+
+      - name: Update README badges
+        run: |
+          TOTAL_SCRIPTS=$(ls scripts | wc -l)
+          TOTAL_EXAMPLES=$(ls examples | wc -l)
+          REQUESTS_PROCESSED=$(cat examples/request_count.txt)
+          LAST_UPDATED=$(date -u +"%Y-%m-%d %H:%M UTC")
+
+          # Replace or insert stats section in README
+          awk -v scripts="$TOTAL_SCRIPTS" -v examples="$TOTAL_EXAMPLES" \
+              -v requests="$REQUESTS_PROCESSED" -v updated="$LAST_UPDATED" \
+              '/## Stats/{f=1} f && /---/{f=0} {print} END{if(f){print "\n## Stats\n- Scripts: "scripts"\n- Examples: "examples"\n- Requests Processed: "requests"\n- Last Updated: "updated"\n"}}' README.md > README.tmp
+          mv README.tmp README.md
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add README.md examples/request_count.txt
+          git commit -m "Auto-update requests processed and stats [skip ci]" || echo "No changes to commit"
+          git push
